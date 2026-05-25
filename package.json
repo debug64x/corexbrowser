@@ -1,0 +1,31 @@
+{
+    "name": "corex-browser",
+    "version": "1.0.0",
+    "description": "Corex Browser - first learning project",
+    "main": "index.js",
+    "scripts": {
+        "start": "electron .",
+        "dist": "electron-builder"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/hooosik/corex-browser.git"
+    },
+    "author": "Walter",
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/hooosik/corex-browser/issues"
+    },
+    "homepage": "https://github.com/hooosik/corex-browser#readme",
+    "build": {
+        "appId": "com.corex.browser",
+        "productName": "Corex Browser",
+        "win": {
+            "icon": "assets/logo.ico"
+        }
+    },
+    "devDependencies": {
+        "electron": "^24.0.0",
+        "electron-builder": "^23.0.0"
+    }
+}

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corex Browser Home</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      #input-container {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+      }
+      #url {
+        padding: 10px;
+        font-size: 18px;
+        width: 400px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      #input-container button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        margin-left: 10px;
+      }
+      #input-container button img {
+        width: 32px;
+        height: 32px;
+      }
+      #logo {
+        max-width: 200px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Logo -->
+    <img src="assets/logo.png" id="logo" alt="Corex Browser Logo" />
+
+    <!-- Input field and Go button with reload icon -->
+    <div id="input-container">
+      <input type="text" id="url" placeholder="Enter URL or Search" />
+      <button onclick="loadPage()">
+        <img src="assets/search_icon.png" alt="Go" />
+      </button>
+    </div>
+
+    <script>
+      const urlInput = document.getElementById("url");
+
+      // Load page when the user presses Enter
+      urlInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          loadPage();
+        }
+      });
+
+      // Function to load URL or Google search query
+      function loadPage() {
+        let query = urlInput.value.trim(); // Get the input value and remove extra spaces
+
+        // Check if the input is a valid URL (it starts with http:// or https://)
+        if (query.startsWith("http://") || query.startsWith("https://")) {
+          window.location.href = query; // Load the URL
+        } else {
+          // If it's not a URL, treat it as a Google search query
+          const googleSearchURL = `https://www.google.com/search?q=${encodeURIComponent(
+            query
+          )}`;
+          window.location.href = googleSearchURL;
+        }
+      }
+    </script>
+  </body>
+</html>

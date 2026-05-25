@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corex Browser</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background-color: white; /* Default light theme */
+        color: black;
+      }
+      #toolbar {
+        display: flex;
+        padding: 10px;
+        background-color: #f1f1f1;
+        border-bottom: 1px solid #ccc;
+      }
+      #toolbar button {
+        margin-right: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      #toolbar button img {
+        width: 24px;
+        height: 24px;
+      }
+      #menu-container {
+        position: relative;
+        display: inline-block;
+      }
+      #menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        background-color: #f9f9f9;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+      #menu button {
+        display: block;
+        padding: 12px;
+        background-color: #f9f9f9;
+        border: none;
+        width: 100%;
+        cursor: pointer;
+        text-align: left;
+      }
+      #menu button:hover {
+        background-color: #ddd;
+      }
+      #url {
+        flex-grow: 1;
+        padding: 5px;
+      }
+      webview {
+        flex-grow: 1;
+        width: 100%;
+        border: none;
+      }
+      /* Dark theme styles */
+      .dark-mode {
+        background-color: #121212;
+        color: #e0e0e0;
+      }
+      .dark-mode #toolbar {
+        background-color: #333;
+        border-bottom: 1px solid #444;
+      }
+      .dark-mode #menu {
+        background-color: #333;
+      }
+      .dark-mode #menu button {
+        background-color: #333;
+        color: #e0e0e0;
+      }
+      .dark-mode #menu button:hover {
+        background-color: #444;
+      }
+      .dark-mode webview {
+        background-color: #121212;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Toolbar with icon buttons -->
+    <div id="toolbar">
+      <button onclick="goBack()">
+        <img src="assets/arrow_back.png" alt="Back" />
+      </button>
+      <button onclick="goForward()">
+        <img
+          src="assets/arrow_back.png"
+          alt="Forward"
+          style="transform: scaleX(-1)"
+        />
+      </button>
+      <button onclick="reloadPage()">
+        <img src="assets/reload.png" alt="Reload" />
+      </button>
+      <input type="text" id="url" placeholder="Enter URL or Search" />
+      <button onclick="loadPage()">
+        <img src="assets/search_icon.png" alt="Go" />
+      </button>
+
+      <!-- Menu button with dropdown -->
+      <div id="menu-container">
+        <button onclick="toggleMenu()">Menu</button>
+        <div id="menu">
+          <button onclick="toggleDarkMode()">Dark Theme</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Webview to load main.html by default -->
+    <webview id="browser" src="main.html"></webview>
+
+    <script>
+      const webview = document.getElementById("browser");
+      const urlInput = document.getElementById("url");
+      const menu = document.getElementById("menu");
+      const body = document.body;
+
+      // Load page when the user presses enter
+      urlInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          loadPage();
+        }
+      });
+
+      // Function to load URL or Google search query
+      function loadPage() {
+        let query = urlInput.value.trim(); // Get the input value and remove extra spaces
+
+        // Check if the input is a valid URL (starts with http:// or https://)
+        if (query.startsWith("http://") || query.startsWith("https://")) {
+          webview.loadURL(query);
+        } else {
+          // If it's not a URL, treat it as a Google search query
+          const googleSearchURL = `https://www.google.com/search?q=${encodeURIComponent(
+            query
+          )}`;
+          webview.loadURL(googleSearchURL);
+        }
+      }
+
+      // Go back in webview history
+      function goBack() {
+        if (webview.canGoBack()) {
+          webview.goBack();
+        }
+      }
+
+      // Go forward in webview history
+      function goForward() {
+        if (webview.canGoForward()) {
+          webview.goForward();
+        }
+      }
+
+      // Reload the current page
+      function reloadPage() {
+        webview.reload();
+      }
+
+      // Toggle menu visibility
+      function toggleMenu() {
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+      }
+
+      // Toggle dark theme
+      function toggleDarkMode() {
+        body.classList.toggle("dark-mode");
+        menu.style.display = "none"; // Hide the menu after selecting Dark Theme
+      }
+    </script>
+  </body>
+</html>
